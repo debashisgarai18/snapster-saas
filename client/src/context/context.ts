@@ -5,4 +5,12 @@ export interface mode {
   toggleMode : () => void
 }
 
+export interface auth{
+  isSignedin: boolean;
+  setIsSignedIn : React.Dispatch<React.SetStateAction<boolean>>
+}
+
 export const ModeContext = createContext<mode | undefined>(undefined);
+export const AuthContext = createContext<auth | undefined>(undefined);
+
+// todo: after creating the backend-> create a context to get the value of the use after sign in
