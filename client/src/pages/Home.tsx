@@ -4,6 +4,7 @@ import { useMode } from "../hooks/useMode";
 import { FaEye } from "react-icons/fa6";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { FiDownload } from "react-icons/fi";
+import { cardPic } from "../assets/demoImg/demoImg";
 
 const howItWorks = [
   {
@@ -100,20 +101,93 @@ export default function Home() {
             </div>
           </div>
           {/* // how it works boxes */}
-          <div className="w-full flex flex-col gap-[1rem]">
-              {
-                howItWorks.map((e, _) => {
-                    return <div className="border-2 flex gap-[1rem] items-center w-full px-[1rem] py-[0.75rem]" key={_}>
-                        <div className="w-[3rem] h-[3rem] flex items-cente justify-center">
-                            {e.icon}
-                        </div>
-                        <div className="flex flex-col gap-[0.75rem]">
-                            <div className="text-[20px] w-full">{e.title}</div>
-                            <div className="text-[15px] w-full">"{e.content}"</div>
-                        </div>
+          <div className="w-full flex flex-col items-center gap-[1.75rem]">
+            {howItWorks.map((e, _) => {
+              return (
+                <div
+                  className="border-2 flex gap-[1rem] rounded-xl shadow-lg items-center w-full md:w-[80%] px-[1rem] py-[1rem]"
+                  key={_}
+                >
+                  <div
+                    className={`text-black w-[35px] h-[35px] md:w-[45px] md:h-[45px] text-xs md:text-base flex items-center justify-center bg-[#e1e9ff] rounded-2xl`}
+                  >
+                    {e.icon}
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-[14px] md:text-[20px] w-full font-semibold">
+                      {e.title}
                     </div>
-                })
-              }
+                    <div
+                      className={`text-xs md:text-[15px] leading-[18.9px] tracking-wide w-full font-medium ${
+                        isDark ? "text-white" : "text-[#545454]"
+                      }`}
+                    >
+                      "{e.content}"
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* // create AI images part */}
+        <div className="w-full flex flex-col items-center gap-[3.75rem]">
+          <div className="w-full flex flex-col items-center">
+            <div className="text-[40px] font-semibold">
+              Create Images with AI ✨
+            </div>
+            <div
+              className={`w-full text-center font-medium ${
+                isDark ? "text-white" : "text-[#545454]"
+              }`}
+            >
+              Turn your imagination into visuals
+            </div>
+          </div>
+          {/* // card part */}
+          <div className="w-full flex items-center gap-[3rem]">
+            <div className="w-[393px] h-[393px] rounded-xl">
+              <img
+                src={cardPic}
+                alt="card"
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </div>
+            <div
+              className="flex flex-col gap-[1.75rem]"
+              style={{ width: "calc(100% - 393px)" }}
+            >
+              <div
+                className={`text-[28px] leading-[38px] break-words w-[70%] font-medium ${
+                  isDark ? "text-white" : "text-[#545454]"
+                }`}
+              >
+                Introducing the AI-Powered Text to Image Generator
+              </div>
+              <div
+                className={`text-[16px] leading-[22px] w-[80%] ${
+                  isDark ? "text-white" : "text-[#545454]"
+                }`}
+              >
+                Effortlessly materialize your concepts with our cutting-edge
+                AI-driven image generator. Whether you require captivating
+                visuals or bespoke graphics, our platform leverages advanced
+                algorithms to transform your descriptions into striking imagery
+                in seconds. Envision, articulate, and witness your ideas take
+                shape instantly.
+              </div>
+              <div
+                className={`text-[16px] leading-[22px] w-[80%] ${
+                  isDark ? "text-white" : "text-[#545454]"
+                }`}
+              >
+                Input a text prompt, and our state-of-the-art AI swiftly
+                generates high-resolution imagery. From marketing assets to
+                conceptual designs and bespoke portraits, even abstract ideas
+                are seamlessly visualized. Leveraging advanced generative
+                algorithms, the creative potential is boundless!
+              </div>
+            </div>
           </div>
         </div>
       </div>
