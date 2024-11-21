@@ -4,6 +4,7 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { IoLogoGithub } from "react-icons/io5";
 import { TiSocialLinkedin } from "react-icons/ti";
 
+// todo : responsiveness
 export default function RenderFooter() {
   const { isDark } = useMode();
   return (
