@@ -1,4 +1,5 @@
 export default function Rating({ n }: { n: number }) {
+    //todo : add the left over stars i.e 5-n stars with black bg
   return (
     <div className="flex items-center">
       {Array.from({ length: n }, () => {

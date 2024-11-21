@@ -36,6 +36,11 @@ export default function Testimonials({
         </div>
       </div>
       <Rating n={data.rating} />
+      <div className={`text-[13px] tracking-wide w-[80%] text-center  ${
+            isDark ? "text-white" : "text-[#545454]"
+          }`}>
+          {data.info}
+      </div>
     </div>
   );
 }
