@@ -5,6 +5,8 @@ import { FaEye } from "react-icons/fa6";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { FiDownload } from "react-icons/fi";
 import { cardPic } from "../assets/demoImg/demoImg";
+import { dummyTestimonials } from "../assets/demoData/testimonials";
+import Testimonials from "../components/Testimonials";
 
 const howItWorks = [
   {
@@ -153,15 +155,14 @@ export default function Home() {
                 className="w-full h-full object-cover rounded-xl"
               />
             </div>
-            <div
-              className="flex flex-col gap-[1.75rem] w-full md:w-calcCustom"
-            >
+            <div className="flex flex-col gap-[1.75rem] w-full md:w-calcCustom">
               <div
                 className={`text-[28px] leading-[38px] break-words w-full md:w-[70%] font-medium ${
                   isDark ? "text-white" : "text-[#545454]"
                 }`}
               >
-                Introducing the AI-Powered <span className="text-[#06AEFF]">Text to Image Generator</span>
+                Introducing the AI-Powered{" "}
+                <span className="text-[#06AEFF]">Text to Image Generator</span>
               </div>
               <div
                 className={`text-[16px] leading-[22px] w-full md:w-[80%] ${
@@ -187,6 +188,30 @@ export default function Home() {
                 algorithms, the creative potential is boundless!
               </div>
             </div>
+          </div>
+        </div>
+        {/* // customer Testimonials */}
+        <div className="w-full flex gap-[2.75rem] flex-col items-center">
+          <div className="w-full flex flex-col items-center justify-center">
+            <div className="text-center font-medium text-[40px]">
+              Customer Testimonials
+            </div>
+            <div
+              className={`w-full text-center font-medium ${
+                isDark ? "text-white" : "text-[#545454]"
+              }`}
+            >
+              What Our Users Are Saying
+            </div>
+          </div>
+          <div className="w-full grid grid-cols-3">
+          {dummyTestimonials.map((e, _) => {
+            return (
+              <div className="w-full" key={_}>
+                <Testimonials data={e} />
+              </div>
+            );
+          })}
           </div>
         </div>
       </div>
