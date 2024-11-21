@@ -3,6 +3,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthContext } from "./context/context";
 import Navbar from "./components/Navbar";
+import RenderFooter from "./components/Footer"
+
 const Home = lazy(() => import("./pages/Home"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 
@@ -23,6 +25,7 @@ export default function SubApp() {
               <Route path="/" element={<Home />} />
               <Route path="/pricing" element={<Pricing />} />
             </Routes>
+            <RenderFooter />
           </BrowserRouter>
         </Suspense>
       </AuthContext.Provider>

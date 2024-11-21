@@ -214,6 +214,14 @@ export default function Home() {
             })}
           </div>
         </div>
+        <div className="w-full flex flex-col items-center gap-[1rem]">
+          <div className="text-center font-medium text-[40px]">Excited?? Try Now 🎯</div>
+          <ButtonComponent
+            label="generate images ✨"
+            width="w-[215px]"
+            clicked={() => console.log("do nothing")}
+          />
+        </div>
       </div>
     </div>
   );

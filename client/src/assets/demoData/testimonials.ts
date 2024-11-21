@@ -13,7 +13,7 @@ export const dummyTestimonials = [
     {
         name : "Richard Nelson",
         designation : "Content Ceator",
-        rating : 5,
+        rating : 3,
         info : "I've been using imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.",
         avatar : avatar2
     },
