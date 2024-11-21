@@ -204,14 +204,14 @@ export default function Home() {
               What Our Users Are Saying
             </div>
           </div>
-          <div className="w-full grid grid-cols-3">
-          {dummyTestimonials.map((e, _) => {
-            return (
-              <div className="w-full" key={_}>
-                <Testimonials data={e} />
-              </div>
-            );
-          })}
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-[1.75rem]">
+            {dummyTestimonials.map((e, _) => {
+              return (
+                <div className="w-full" key={_}>
+                  <Testimonials data={e} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
