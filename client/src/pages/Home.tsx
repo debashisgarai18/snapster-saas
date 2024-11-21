@@ -145,8 +145,8 @@ export default function Home() {
             </div>
           </div>
           {/* // card part */}
-          <div className="w-full flex items-center gap-[3rem]">
-            <div className="w-[393px] h-[393px] rounded-xl">
+          <div className="w-full flex flex-col md:flex-row justify-center items-center gap-[3rem]">
+            <div className="w-full md:w-[393px] h-[393px] rounded-xl">
               <img
                 src={cardPic}
                 alt="card"
@@ -154,18 +154,17 @@ export default function Home() {
               />
             </div>
             <div
-              className="flex flex-col gap-[1.75rem]"
-              style={{ width: "calc(100% - 393px)" }}
+              className="flex flex-col gap-[1.75rem] w-full md:w-calcCustom"
             >
               <div
-                className={`text-[28px] leading-[38px] break-words w-[70%] font-medium ${
+                className={`text-[28px] leading-[38px] break-words w-full md:w-[70%] font-medium ${
                   isDark ? "text-white" : "text-[#545454]"
                 }`}
               >
-                Introducing the AI-Powered Text to Image Generator
+                Introducing the AI-Powered <span className="text-[#06AEFF]">Text to Image Generator</span>
               </div>
               <div
-                className={`text-[16px] leading-[22px] w-[80%] ${
+                className={`text-[16px] leading-[22px] w-full md:w-[80%] ${
                   isDark ? "text-white" : "text-[#545454]"
                 }`}
               >
@@ -177,7 +176,7 @@ export default function Home() {
                 shape instantly.
               </div>
               <div
-                className={`text-[16px] leading-[22px] w-[80%] ${
+                className={`text-[16px] leading-[22px] w-full md:w-[80%] ${
                   isDark ? "text-white" : "text-[#545454]"
                 }`}
               >
