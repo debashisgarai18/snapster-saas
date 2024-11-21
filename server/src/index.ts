@@ -1,9 +1,10 @@
 import { Hono } from 'hono'
+import userRoute from './Routes/userRoute'
 
-const app = new Hono()
+const app = new Hono().basePath("/api/v1/")
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+// todo : add the cors middleware
+// dynamic routes
+app.route("/user", userRoute)
 
 export default app
