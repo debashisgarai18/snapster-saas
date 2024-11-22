@@ -1,31 +1,18 @@
 {
   "compilerOptions": {
-    // Enable latest features
-    "lib": ["ESNext", "DOM"],
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-
-    "declaration": true,
-    "resolveJsonModule": true,
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-    // Best practices
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "target": "ESNext",                     // Adjust the target JavaScript version
+    "module": "ESNext",                     // Use ES modules
+    "moduleResolution": "node",            // Resolve modules like Node.js
+    "strict": true,                        // Enable strict type checking
+    "esModuleInterop": true,               // Allow default imports from CommonJS modules
+    "skipLibCheck": true,                  // Skip type-checking of declaration files
+    "outDir": "./dist",                    // Output directory for compiled files
+    "rootDir": "./src",                    // Root directory for source files
+    "resolveJsonModule": true,             // Allow importing JSON files
+    "declaration": true,                   // Generate `.d.ts` files
+    "sourceMap": true                      // Generate source maps
+  },
+  "include": [
+    "src/**/*"                             // Include all files in the `src` directory
+  ],
 }
