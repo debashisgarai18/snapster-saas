@@ -5,10 +5,19 @@ import { FiMoon } from "react-icons/fi";
 import { useMode } from "../hooks/useMode";
 import { FiSun } from "react-icons/fi";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa6";
 
 // this is the generalized navbar for all the pages
 // todo : get the user details from a global context and propagate here
-export default function Navbar() {
+export default function Navbar({
+  data,
+}: {
+  data: {
+    user: string | undefined;
+    credits: number | undefined;
+  };
+}) {
   // hooks
   const { isSignedin, setIsSignedIn } = useAuth();
   const { isDark, toggleMode } = useMode();
@@ -60,6 +69,23 @@ export default function Navbar() {
                 <FiMoon />
               </div>
             )}
+          </div>
+          <div className="flex items-center gap-[0.5rem] bg-[#D7EBFF] rounded-full px-[1rem] py-[0.5rem] shadow-md">
+            <div className="w-[23px] text-xs text-white h-[23px] rounded-full bg-[#007AFF] flex items-center justify-center">
+              <FaStar />
+            </div>
+            <div
+              className={`text-[15px] text-xs leading-[28px] font-medium text-black`}
+            >
+              <span className="hidden md:block">Credits Left : </span>
+              {data.credits}
+            </div>
+          </div>
+          <div className="text-[15px] leading-[18.9px] hidden md:block font-medium">
+            Hi, {data.user}
+          </div>
+          <div className="w-[45px] h-[45px] text-black cursor-pointer shadow-md flex items-center justify-center bg-white rounded-full">
+            <FaRegUser />
           </div>
         </div>
       )}
