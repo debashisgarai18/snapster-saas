@@ -17,6 +17,7 @@ export default function SubApp() {
   // states
   const [user, setUser] = useState<string | undefined>(undefined);
   const [credits, setCredits] = useState<number | undefined>(undefined);
+  const [authMenu, setAuthMenu] = useState<boolean>(false)
 
   // global state
   const [isSignedin, setIsSignedIn] = useState<boolean>(() => {
@@ -69,9 +70,9 @@ export default function SubApp() {
       <AuthContext.Provider value={{ isSignedin, setIsSignedIn }}>
         <Suspense fallback={<Loader />}>
           <BrowserRouter>
-            <Navbar data={{ user: user, credits: credits }} />
+            <Navbar data={{ user: user, credits: credits }} auth={authMenu} setAuth={() =>  setAuthMenu(prev => !prev)} />
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home auth={authMenu} setAuth={() =>  setAuthMenu(prev => !prev)}/>} />
               <Route path="/pricing" element={<Pricing />} />
             </Routes>
             <RenderFooter />

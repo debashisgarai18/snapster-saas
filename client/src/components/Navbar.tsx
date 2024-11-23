@@ -21,17 +21,20 @@ import {
 // todo : get the user details from a global context and propagate here
 export default function Navbar({
   data,
+  setAuth,
 }: {
   data: {
     user: string | undefined;
     credits: number | undefined;
   };
+  auth: boolean;
+  setAuth: () => void;
 }) {
   // states
   const [openDropdown, setOpendropdown] = useState<boolean>(false);
 
   // hooks
-  const { isSignedin, setIsSignedIn } = useAuth();
+  const { isSignedin } = useAuth();
   const { isDark, toggleMode } = useMode();
 
   return (
@@ -65,7 +68,9 @@ export default function Navbar({
           </div>
           <ButtonComponent
             label="Login"
-            clicked={() => setIsSignedIn((prev) => !prev)}
+            clicked={() => {
+              setAuth();
+            }}
           />
         </div>
       ) : (

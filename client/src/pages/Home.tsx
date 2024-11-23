@@ -7,6 +7,7 @@ import { FiDownload } from "react-icons/fi";
 import { cardPic } from "../assets/demoImg/demoImg";
 import { dummyTestimonials } from "../assets/demoData/testimonials";
 import Testimonials from "../components/Testimonials";
+import Signup from "../components/Signup";
 
 const howItWorks = [
   {
@@ -29,16 +30,20 @@ const howItWorks = [
   },
 ];
 
-export default function Home() {
+export default function Home({auth, setAuth}:{auth : boolean, setAuth : () => void}) {
   // hooks
   const { isDark } = useMode();
 
   return (
+    <>
+    {
+      auth && <Signup />
+    }
     <div
       className={`${
         isDark ? "dark" : "light"
       } flex justify-center min-h-screen w-full py-[3rem]`}
-    >
+      >
       <div className="w-full flex flex-col items-center gap-[7rem] md:gap-[8.5rem] px-[2rem] md:px-0 md:w-[60%]">
         <div className="w-full flex flex-col items-center gap-[2rem] md:gap-[2rem]">
           <div className="px-[1rem] py-[0.5rem] rounded-full border-2 bg-white text-black font-medium">
@@ -224,5 +229,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+      </>
   );
 }
