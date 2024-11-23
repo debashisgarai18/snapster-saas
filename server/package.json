@@ -8,7 +8,8 @@
     "@deba018/blogs-common": "^1.0.1",
     "@prisma/client": "^5.22.0",
     "@prisma/extension-accelerate": "^1.2.1",
-    "hono": "^4.6.11"
+    "hono": "^4.6.11",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241112.0",
