@@ -7,6 +7,15 @@ import { FiSun } from "react-icons/fi";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
+import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 // this is the generalized navbar for all the pages
 // todo : get the user details from a global context and propagate here
@@ -18,6 +27,9 @@ export default function Navbar({
     credits: number | undefined;
   };
 }) {
+  // states
+  const [openDropdown, setOpendropdown] = useState<boolean>(false);
+
   // hooks
   const { isSignedin, setIsSignedIn } = useAuth();
   const { isDark, toggleMode } = useMode();
@@ -57,7 +69,6 @@ export default function Navbar({
           />
         </div>
       ) : (
-        // todo : load the user data from the global context
         <div className="flex items-center gap-[1rem]">
           <div onClick={toggleMode} className="cursor-pointer">
             {isDark ? (
@@ -77,16 +88,40 @@ export default function Navbar({
             <div
               className={`text-[15px] text-xs leading-[28px] font-medium text-black`}
             >
-              <span className="hidden md:block">Credits Left : </span>
-              {data.credits}
+              <div className="flex items-center gap-[0.3rem]">
+                <div className="hidden md:block">Credits Left : </div>
+                <div>{data.credits}</div>
+              </div>
             </div>
           </div>
           <div className="text-[15px] leading-[18.9px] hidden md:block font-medium">
             Hi, {data.user}
           </div>
-          <div className="w-[45px] h-[45px] text-black cursor-pointer shadow-md flex items-center justify-center bg-white rounded-full">
-            <FaRegUser />
-          </div>
+          {openDropdown ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="w-[45px] h-[45px] text-black cursor-pointer shadow-md flex items-center justify-center bg-white rounded-full"
+                onClick={() => setOpendropdown((prev) => !prev)}
+              >
+                <FaRegUser />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>Team</DropdownMenuItem>
+                <DropdownMenuItem>Subscription</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div
+              className="w-[45px] h-[45px] text-black cursor-pointer shadow-md flex items-center justify-center bg-white rounded-full"
+              onClick={() => setOpendropdown((prev) => !prev)}
+            >
+              <FaRegUser />
+            </div>
+          )}
         </div>
       )}
     </div>

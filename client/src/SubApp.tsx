@@ -19,15 +19,21 @@ export default function SubApp() {
   const [credits, setCredits] = useState<number | undefined>(undefined);
 
   // global state
-  const [isSignedin, setIsSignedIn] = useState<boolean>(false);
+  const [isSignedin, setIsSignedIn] = useState<boolean>(() => {
+    if (localStorage.getItem("token")) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
   // auth check
   useEffect(() => {
     (async function () {
-      localStorage.setItem(
-        "token",
-        `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1MzRlZjgyLTQ1ZjctNDc2NS05MjlhLTI1Y2FiYzFiN2E0MSJ9.YKhp3caS7UVSTdkrNNy2JnyE164DYhTrjVvF68vom4s`
-      );
+      // localStorage.setItem(
+      //   "token",
+      //   `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1MzRlZjgyLTQ1ZjctNDc2NS05MjlhLTI1Y2FiYzFiN2E0MSJ9.YKhp3caS7UVSTdkrNNy2JnyE164DYhTrjVvF68vom4s`
+      // );
       if (localStorage.getItem("token")) {
         // check for me endpoint
         try {
@@ -63,7 +69,7 @@ export default function SubApp() {
       <AuthContext.Provider value={{ isSignedin, setIsSignedIn }}>
         <Suspense fallback={<Loader />}>
           <BrowserRouter>
-            <Navbar data={{user : user, credits : credits}}/>
+            <Navbar data={{ user: user, credits: credits }} />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/pricing" element={<Pricing />} />
