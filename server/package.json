@@ -8,6 +8,7 @@
     "@deba018/blogs-common": "^1.0.1",
     "@prisma/client": "^5.22.0",
     "@prisma/extension-accelerate": "^1.2.1",
+    "cors": "^2.8.5",
     "hono": "^4.6.11",
     "jsonwebtoken": "^9.0.2"
   },

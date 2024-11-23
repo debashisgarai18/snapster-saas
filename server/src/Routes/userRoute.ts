@@ -4,8 +4,46 @@ import { Context, Hono } from "hono";
 import { signupAuth } from "../Middlewares/authVal";
 import { signinType, signupType } from "@deba018/blogs-common";
 import { sign } from "hono/jwt";
+import { userAuthCheck } from "../Middlewares/authCheck";
 
 const userRoute = new Hono();
+
+// endpoint for the user auth for each page
+userRoute.get("/me", userAuthCheck, async (c: Context) => {
+  // get the user details
+  const userId = c.get("user");
+
+  // init prisma
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const resp = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select : {
+        name : true,
+        email : true,
+        credits : true
+      }
+    });
+    if (resp) {
+      c.status(200);
+      return c.json({
+        message: "Authenticated",
+        user: resp,
+      });
+    }
+  } catch (err) {
+    c.status(500);
+    return c.json({
+      err: err,
+      message: "Internal Server Error",
+    });
+  }
+});
 
 // endpoint for singnup the user
 userRoute.post("/signup", signupAuth, async (c: Context) => {

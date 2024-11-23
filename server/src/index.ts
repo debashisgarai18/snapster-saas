@@ -1,9 +1,11 @@
 import { Hono } from "hono";
 import userRoute from "./Routes/userRoute";
+import { cors } from "hono/cors";
+
 
 const app = new Hono().basePath("/api/v1/");
 
-// todo : add the cors middleware
+app.use("/*", cors())
 // dynamic routes
 app.route("/user", userRoute);
 
