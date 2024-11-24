@@ -31,10 +31,6 @@ export default function SubApp() {
   // auth check
   useEffect(() => {
     (async function () {
-      // localStorage.setItem(
-      //   "token",
-      //   `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1MzRlZjgyLTQ1ZjctNDc2NS05MjlhLTI1Y2FiYzFiN2E0MSJ9.YKhp3caS7UVSTdkrNNy2JnyE164DYhTrjVvF68vom4s`
-      // );
       if (localStorage.getItem("token")) {
         // check for me endpoint
         try {
@@ -63,7 +59,7 @@ export default function SubApp() {
         setIsSignedIn(false);
       }
     })();
-  }, [url]);
+  }, [url, isSignedin]);
 
   return (
     <>

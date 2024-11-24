@@ -34,7 +34,7 @@ export default function Navbar({
   const [openDropdown, setOpendropdown] = useState<boolean>(false);
 
   // hooks
-  const { isSignedin } = useAuth();
+  const { isSignedin, setIsSignedIn } = useAuth();
   const { isDark, toggleMode } = useMode();
 
   return (
@@ -113,10 +113,18 @@ export default function Navbar({
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  Edit Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    setIsSignedIn((prev) => !prev);
+                  }}
+                >
+                  Sign out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (

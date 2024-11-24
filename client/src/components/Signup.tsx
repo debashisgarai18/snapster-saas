@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { signupType } from "@deba018/blogs-common";
 import { IoCloseSharp } from "react-icons/io5";
+import { AxiosError } from "axios";
+import Swal from "sweetalert2";
+import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup({ clicked }: { clicked: () => void }) {
   // states
@@ -12,6 +17,43 @@ export default function Signup({ clicked }: { clicked: () => void }) {
     username: "",
     pwd: "",
   });
+
+  // hooks
+  const { setIsSignedIn } = useAuth();
+  const nav = useNavigate();
+
+  // function to submit the data to the backend API
+  const handleSubmit = async () => {
+    try {
+      const resp = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/${
+          authType.type === "signin" ? "signin" : "signup"
+        }`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      localStorage.setItem("token", `Bearer ${resp.data.token}`);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: resp.data.message ?? "User Created",
+      });
+      setIsSignedIn((prev) => !prev);
+      nav("/");
+      clicked();
+    } catch (err) {
+      const error = err as AxiosError<{ message: string; feedback?: string }>;
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response?.data?.message,
+      });
+    }
+  };
 
   return (
     <>
@@ -35,6 +77,7 @@ export default function Signup({ clicked }: { clicked: () => void }) {
               setData={(e) => setFormData(e)}
               data={formData}
               auth={(e: "signup" | "signin") => setAuthType({ type: e })}
+              clickButton={handleSubmit}
             />
           ) : (
             <FormArea
@@ -46,6 +89,7 @@ export default function Signup({ clicked }: { clicked: () => void }) {
               setData={(e) => setFormData(e)}
               data={formData}
               auth={(e: "signup" | "signin") => setAuthType({ type: e })}
+              clickButton={handleSubmit}
             />
           )}
         </div>
@@ -63,6 +107,7 @@ const FormArea = ({
   setData,
   data,
   auth,
+  clickButton,
 }: {
   heading: string;
   headerText: string;
@@ -72,6 +117,7 @@ const FormArea = ({
   data: signupType;
   setData: (e: signupType) => void;
   auth: (e: "signup" | "signin") => void;
+  clickButton: () => void;
 }) => {
   return (
     <div className="w-full flex flex-col gap-[2.5rem]">
@@ -120,7 +166,10 @@ const FormArea = ({
           {type === "signin" && "Forgot Password?"}
         </div>
       </div>
-      <button className="w-full py-[1rem] text-white bg-[#007AFF] text-[16px] rounded-full leading-[20px]">
+      <button
+        className="w-full py-[1rem] text-white bg-[#007AFF] text-[16px] rounded-full leading-[20px]"
+        onClick={clickButton}
+      >
         {type === "signin" ? "Login" : "Signup"}
       </button>
       <div className="w-full text-[15px] leading-[18px] flex items-center justify-center gap-[0.5rem]">
