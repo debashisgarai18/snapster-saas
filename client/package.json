@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deba018/blogs-common": "^1.0.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.8",
@@ -26,7 +27,8 @@
     "react-router-dom": "^6.28.0",
     "sweetalert2": "^11.14.5",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-filters": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
