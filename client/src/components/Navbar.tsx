@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
 // this is the generalized navbar for all the pages
 // todo : get the user details from a global context and propagate here
@@ -36,6 +37,7 @@ export default function Navbar({
   // hooks
   const { isSignedin, setIsSignedIn } = useAuth();
   const { isDark, toggleMode } = useMode();
+  const nav = useNavigate();
 
   return (
     <div
@@ -43,9 +45,12 @@ export default function Navbar({
         isDark ? "dark" : "light"
       } flex  items-center justify-between py-[1rem] px-[1rem] md:px-[4rem]`}
     >
-      <div className="flex items-center justify-center gap-[0.75rem]">
+      <div
+        className="flex items-center justify-center gap-[0.75rem]"
+        onClick={() => nav("/")}
+      >
         <div className="w-[2.5rem] h-[2.5rem]">
-          <img src={logo} alt="logo" className="w-full h-full" />
+          <img src={logo} alt="logo" className="w-full h-full cursor-pointer" />
         </div>
         <div className="text-2xl font-bold">snapster</div>
       </div>
@@ -93,7 +98,7 @@ export default function Navbar({
             <div
               className={`text-[15px] text-xs leading-[28px] font-medium text-black`}
             >
-              <div className="flex items-center gap-[0.3rem]">
+              <div className="flex items-center gap-[0.3rem] hover:scale-105 transition-all cursor-pointer duration-700">
                 <div className="hidden md:block">Credits Left : </div>
                 <div>{data.credits}</div>
               </div>

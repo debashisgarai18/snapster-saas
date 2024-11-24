@@ -9,6 +9,7 @@ import { dummyTestimonials } from "../assets/demoData/testimonials";
 import Testimonials from "../components/Testimonials";
 import Signup from "../components/Signup";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const howItWorks = [
   {
@@ -40,6 +41,7 @@ export default function Home({
 }) {
   // hooks
   const { isDark } = useMode();
+  const nav = useNavigate();
 
   useEffect(() => {
     if (auth) {
@@ -86,7 +88,7 @@ export default function Home({
             <ButtonComponent
               label="generate images ✨"
               width="w-[215px]"
-              clicked={() => console.log("do nothing")}
+              clicked={() => nav("/generate")}
             />
           </div>
           <div className="w-full flex flex-col items-center justify-center gap-[1rem]">
@@ -133,7 +135,7 @@ export default function Home({
               {howItWorks.map((e, _) => {
                 return (
                   <div
-                    className="border-2 flex gap-[1rem] rounded-xl shadow-lg items-center w-full md:w-[80%] px-[1rem] py-[1rem]"
+                    className="border-2 flex gap-[1rem] rounded-xl shadow-lg items-center w-full md:w-[80%] px-[1rem] py-[1rem] cursor-pointer hover:scale-[1.02] transition-all duration-700"
                     key={_}
                   >
                     <div
@@ -249,7 +251,7 @@ export default function Home({
             <ButtonComponent
               label="generate images ✨"
               width="w-[215px]"
-              clicked={() => console.log("do nothing")}
+              clicked={() => nav("/generate")}
             />
           </div>
         </div>

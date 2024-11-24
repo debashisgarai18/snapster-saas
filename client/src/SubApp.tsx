@@ -7,6 +7,7 @@ import RenderFooter from "./components/Footer";
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
 import axios from "axios";
+import GenImage from "./pages/GenImage";
 
 const Home = lazy(() => import("./pages/Home"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -70,6 +71,7 @@ export default function SubApp() {
             <Routes>
               <Route path="/" element={<Home auth={authMenu} setAuth={() =>  setAuthMenu(prev => !prev)}/>} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/generate" element={<GenImage />}/>
             </Routes>
             <RenderFooter />
           </BrowserRouter>

@@ -3,9 +3,13 @@ import logo from "../../src/assets/logo.png";
 import { RiTwitterXLine } from "react-icons/ri";
 import { IoLogoGithub } from "react-icons/io5";
 import { TiSocialLinkedin } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
 
 export default function RenderFooter() {
+  // hooks
   const { isDark } = useMode();
+  const nav = useNavigate();
+
   return (
     <div
       className={`w-full flex px-[0.75rem] md:px-0  items-center py-[1rem] justify-center ${
@@ -14,9 +18,16 @@ export default function RenderFooter() {
     >
       <div className="w-full md:w-[80%] flex items-center justify-between">
         <div className="flex items-center gap-[1rem] md:gap-[2.75rem]">
-          <div className="flex items-center justify-center gap-[0.75rem]">
+          <div
+            className="flex items-center justify-center gap-[0.75rem]"
+            onClick={() => nav("/")}
+          >
             <div className="w-[2.5rem] h-[2.5rem]">
-              <img src={logo} alt="logo" className="w-full h-full" />
+              <img
+                src={logo}
+                alt="logo"
+                className="w-full h-full cursor-pointer"
+              />
             </div>
             <div className="text-2xl hidden md:block font-bold">snapster</div>
           </div>
