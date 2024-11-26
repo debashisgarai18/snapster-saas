@@ -1,6 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const Loader = ({ textColor }: { textColor : string }) => {
+export const Loader = ({ textColor }: { textColor? : string }) => {
   return (
     <div className="w-full h-screen flex flex-col gap-[1rem] items-center justify-center">
       <CircularProgress size="5rem" />
