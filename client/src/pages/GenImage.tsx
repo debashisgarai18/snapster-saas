@@ -46,7 +46,9 @@ export default function GenImage() {
               Generate More
             </button>
             <button className="py-[0.8rem] px-[2rem] bg-black cursor-pointer font-medium text-white rounded-full">
-              <a href={DemoImg} download>Download Now</a>
+              <a href={DemoImg} download>
+                Download Now
+              </a>
             </button>
           </div>
         ) : (
