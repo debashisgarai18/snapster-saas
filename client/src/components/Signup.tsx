@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import useLaoding from "../hooks/useLoading";
+import { Loader } from "./Loader";
 
 export default function Signup({ clicked }: { clicked: () => void }) {
   // states
@@ -21,10 +23,12 @@ export default function Signup({ clicked }: { clicked: () => void }) {
   // hooks
   const { setIsSignedIn } = useAuth();
   const nav = useNavigate();
+  const { isLoading, setLoading } = useLaoding();
 
   // function to submit the data to the backend API
   const handleSubmit = async () => {
     try {
+      setLoading((prev) => !prev);
       const resp = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/user/${
           authType.type === "signin" ? "signin" : "signup"
@@ -37,6 +41,7 @@ export default function Signup({ clicked }: { clicked: () => void }) {
         }
       );
       localStorage.setItem("token", `Bearer ${resp.data.token}`);
+      setLoading((prev) => !prev);
       Swal.fire({
         icon: "success",
         title: "Success",
@@ -52,8 +57,17 @@ export default function Signup({ clicked }: { clicked: () => void }) {
         title: "Oops...",
         text: error.response?.data?.message,
       });
+      setLoading((prev) => !prev);
     }
   };
+
+  if (isLoading) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
 
   return (
     <>

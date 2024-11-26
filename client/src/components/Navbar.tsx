@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
+import useLaoding from "../hooks/useLoading";
 
 // this is the generalized navbar for all the pages
 // todo : get the user details from a global context and propagate here
@@ -38,6 +39,7 @@ export default function Navbar({
   const { isSignedin, setIsSignedIn } = useAuth();
   const { isDark, toggleMode } = useMode();
   const nav = useNavigate();
+  const { setLoading } = useLaoding();
 
   return (
     <div
@@ -124,8 +126,10 @@ export default function Navbar({
                 <DropdownMenuItem
                   className="cursor-pointer"
                   onClick={() => {
+                    setLoading((prev) => !prev);
                     localStorage.removeItem("token");
                     setIsSignedIn((prev) => !prev);
+                    setLoading((prev) => !prev);
                   }}
                 >
                   Sign out

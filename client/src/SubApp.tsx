@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AuthContext } from "./context/context";
+import { AuthContext, LoadingContext } from "./context/context";
 import Navbar from "./components/Navbar";
 import RenderFooter from "./components/Footer";
 import { AxiosError } from "axios";
@@ -18,9 +18,10 @@ export default function SubApp() {
   // states
   const [user, setUser] = useState<string | undefined>(undefined);
   const [credits, setCredits] = useState<number | undefined>(undefined);
-  const [authMenu, setAuthMenu] = useState<boolean>(false)
+  const [authMenu, setAuthMenu] = useState<boolean>(false);
 
   // global state
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [isSignedin, setIsSignedIn] = useState<boolean>(() => {
     if (localStorage.getItem("token")) {
       return true;
@@ -65,27 +66,41 @@ export default function SubApp() {
   return (
     <>
       <AuthContext.Provider value={{ isSignedin, setIsSignedIn }}>
-        <Suspense fallback={<Loader />}>
-          <BrowserRouter>
-            <Navbar data={{ user: user, credits: credits }} auth={authMenu} setAuth={() =>  setAuthMenu(prev => !prev)} />
-            <Routes>
-              <Route path="/" element={<Home auth={authMenu} setAuth={() =>  setAuthMenu(prev => !prev)}/>} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/generate" element={<GenImage />}/>
-            </Routes>
-            <RenderFooter />
-          </BrowserRouter>
-        </Suspense>
+        <LoadingContext.Provider value={{ isLoading, setLoading }}>
+          <Suspense fallback={<InitLoader />}>
+            <BrowserRouter>
+              <Navbar
+                data={{ user: user, credits: credits }}
+                auth={authMenu}
+                setAuth={() => setAuthMenu((prev) => !prev)}
+              />
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Home
+                      auth={authMenu}
+                      setAuth={() => setAuthMenu((prev) => !prev)}
+                    />
+                  }
+                />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/generate" element={<GenImage />} />
+              </Routes>
+              <RenderFooter />
+            </BrowserRouter>
+          </Suspense>
+        </LoadingContext.Provider>
       </AuthContext.Provider>
     </>
   );
 }
 
-export const Loader = () => {
+const InitLoader = () => {
   return (
     <div className="w-full h-screen flex flex-col gap-[1rem] items-center justify-center">
       <CircularProgress size="5rem" />
-      <div className="text-3xl font-semibold">Loading...</div>
+      <div className={`text-3xl font-semibold `}>Loading...</div>
     </div>
   );
-};
+}
