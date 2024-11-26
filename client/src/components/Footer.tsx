@@ -19,15 +19,11 @@ export default function RenderFooter() {
       <div className="w-full md:w-[80%] flex items-center justify-between">
         <div className="flex items-center gap-[1rem] md:gap-[2.75rem]">
           <div
-            className="flex items-center justify-center gap-[0.75rem]"
+            className="flex items-center justify-center gap-[0.75rem] cursor-pointer"
             onClick={() => nav("/")}
           >
             <div className="w-[2.5rem] h-[2.5rem]">
-              <img
-                src={logo}
-                alt="logo"
-                className="w-full h-full cursor-pointer"
-              />
+              <img src={logo} alt="logo" className="w-full h-full" />
             </div>
             <div className="text-2xl hidden md:block font-bold">snapster</div>
           </div>

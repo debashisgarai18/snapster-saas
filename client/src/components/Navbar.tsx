@@ -48,11 +48,11 @@ export default function Navbar({
       } flex  items-center justify-between py-[1rem] px-[1rem] md:px-[4rem]`}
     >
       <div
-        className="flex items-center justify-center gap-[0.75rem]"
+        className="flex items-center justify-center gap-[0.75rem] cursor-pointer"
         onClick={() => nav("/")}
       >
         <div className="w-[2.5rem] h-[2.5rem]">
-          <img src={logo} alt="logo" className="w-full h-full cursor-pointer" />
+          <img src={logo} alt="logo" className="w-full h-full" />
         </div>
         <div className="text-2xl font-bold">snapster</div>
       </div>

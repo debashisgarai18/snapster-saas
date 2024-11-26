@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useMode } from "../hooks/useMode";
 import DemoImg from "../assets/genImage.jpg";
+import useLaoding from "../hooks/useLoading";
+import { Loader } from "../components/Loader";
 
 export default function GenImage() {
   // states
@@ -13,18 +15,33 @@ export default function GenImage() {
   const { isSignedin } = useAuth();
   const nav = useNavigate();
   const { isDark } = useMode();
+  const { isLoading, setLoading } = useLaoding();
 
   // check for the user logged in thing
   useEffect(() => {
-    if (!isSignedin) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "You are not logged in",
-      });
-      nav("/");
-    }
-  }, [isSignedin, nav]);
+    (async function () {
+      if (!isSignedin) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "You are not logged in",
+        });
+        nav("/");
+      } else {
+        setLoading((prev) => !prev);
+        await new Promise((r) => setTimeout(r, 1000));
+        setLoading((prev) => !prev);
+      }
+    })();
+  }, [isSignedin, nav, setLoading]);
+
+  if (isLoading) {
+    return (
+      <div className={`fixed inset-0 z-50 ${isDark ? "dark" : "light"}  backdrop-blur-sm flex items-center justify-center`} >
+        <Loader textColor={isDark ? "text-white" : "text-black"}/>
+      </div>
+    );
+  }
 
   return (
     <div
