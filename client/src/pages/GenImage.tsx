@@ -6,6 +6,7 @@ import { useMode } from "../hooks/useMode";
 import DemoImg from "../assets/genImage.jpg";
 import useLaoding from "../hooks/useLoading";
 import { Loader } from "../components/Loader";
+import { motion } from "motion/react";
 
 export default function GenImage() {
   // states
@@ -37,8 +38,12 @@ export default function GenImage() {
 
   if (isLoading) {
     return (
-      <div className={`fixed inset-0 z-50 ${isDark ? "dark" : "light"}  backdrop-blur-sm flex items-center justify-center`} >
-        <Loader textColor={isDark ? "text-white" : "text-black"}/>
+      <div
+        className={`fixed inset-0 z-50 ${
+          isDark ? "dark" : "light"
+        }  backdrop-blur-sm flex items-center justify-center`}
+      >
+        <Loader textColor={isDark ? "text-white" : "text-black"} />
       </div>
     );
   }
@@ -50,7 +55,14 @@ export default function GenImage() {
     >
       <div className="w-full md:w-[50%] flex flex-col items-center py-[3rem] gap-[3.75rem] px-[1rem] md:px-0">
         <div className="w-[358px] h-[358px] relative rounded-lg shadow-lg">
-          <img src={DemoImg} alt="demo" className="w-full h-full rounded-lg" />
+          <motion.img
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            transition={{ duration: 0.2 }}
+            src={DemoImg}
+            alt="demo"
+            className="w-full h-full rounded-lg"
+          />
           <span className="w-full h-[0.3rem] absolute bottom-0 rounded-b-lg bg-[#007AFF]"></span>
           <div>Loading...</div>
         </div>
@@ -69,10 +81,10 @@ export default function GenImage() {
             </button>
           </div>
         ) : (
-          <div className="w-full md:w-[70%] relative flex shadow-lg">
+          <div className="w-full md:w-[70%] rounded-full relative flex shadow-lg">
             <input
               type="text"
-              className="w-full py-[0.8rem] rounded-full px-[2rem] bg-[#6B6B6B]  font-medium outline-none"
+              className="w-full py-[0.8rem] rounded-full text-white px-[2rem] bg-[#6B6B6B] font-medium outline-none"
               placeholder="Enter your prompt"
             />
             <button

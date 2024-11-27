@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import useLaoding from "../hooks/useLoading";
 import { Loader } from "./Loader";
+import { motion } from "motion/react";
 
 export default function Signup({ clicked }: { clicked: () => void }) {
   // states
@@ -71,7 +72,12 @@ export default function Signup({ clicked }: { clicked: () => void }) {
 
   return (
     <>
-      <div className="w-full px-[1rem] md:px-0 h-screen flex items-center justify-center absolute">
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 0.1 }}
+        className="w-full px-[1rem] md:px-0 h-screen flex items-center justify-center absolute"
+      >
         <div
           className={`w-full md:w-[30%] bg-white shadow-lg relative rounded-xl px-[1.75rem] py-[2.75rem] `}
         >
@@ -107,7 +113,7 @@ export default function Signup({ clicked }: { clicked: () => void }) {
             />
           )}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }
