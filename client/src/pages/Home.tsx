@@ -269,7 +269,12 @@ export default function Home({
             </motion.div>
           </motion.div>
           {/* // customer Testimonials */}
-          <div className="w-full flex gap-[2.75rem] flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="w-full flex gap-[2.75rem] flex-col items-center"
+          >
             <div className="w-full flex flex-col items-center justify-center">
               <div className="text-center font-medium text-[40px]">
                 Customer Testimonials
@@ -285,14 +290,25 @@ export default function Home({
             <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-[1.75rem]">
               {dummyTestimonials.map((e, _) => {
                 return (
-                  <div className="w-full" key={_}>
+                  <motion.div
+                    whileInView={{ scale: 1 }}
+                    animate={{ scale: 0 }}
+                    transition={{ duration: 1.2, type: "spring" }}
+                    className="w-full"
+                    key={_}
+                  >
                     <Testimonials data={e} />
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
-          <div className="w-full flex flex-col items-center gap-[1rem]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="w-full flex flex-col items-center gap-[1rem]"
+          >
             <div className="text-center font-medium text-[40px]">
               Excited?? Try Now 🎯
             </div>
@@ -301,7 +317,7 @@ export default function Home({
               width="w-[215px]"
               clicked={() => nav("/generate")}
             />
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </>
