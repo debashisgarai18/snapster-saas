@@ -10,6 +10,7 @@ import Testimonials from "../components/Testimonials";
 import Signup from "../components/Signup";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 const howItWorks = [
   {
@@ -62,29 +63,45 @@ export default function Home({
           <Signup clicked={setAuth} />
         </div>
       )}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 100 }}
+        transition={{ duration: 1 }}
+        animate={{ opacity: 1, y: 0 }}
         className={`${
           isDark ? "dark" : "light"
         } flex justify-center min-h-screen w-full py-[3rem]`}
       >
         <div className="w-full flex flex-col items-center gap-[7rem] md:gap-[8.5rem] px-[2rem] md:px-0 md:w-[60%]">
           <div className="w-full flex flex-col items-center gap-[2rem] md:gap-[2rem]">
-            <div className="px-[1rem] py-[0.5rem] rounded-full border-2 bg-white text-black font-medium">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.2 }}
+              className="px-[1rem] py-[0.5rem] rounded-full border-2 bg-white text-black font-medium"
+            >
               #1 Text to image generator ⭐
-            </div>
-            <div className="text-[40px] font-medium md:text-[80px] break-words w-[80%] md:w-[60%] text-center leading-[40px] md:leading-[80px]">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-[40px] font-medium md:text-[80px] break-words w-[80%] md:w-[60%] text-center leading-[40px] md:leading-[80px]"
+            >
               Turn text to{" "}
               <span className="text-[#06AEFF] font-semibold">image</span>, in
               seconds.
-            </div>
-            <div
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
               className={`text-[14px] md:text-[18px] w-full md:w-[50%] leading-[18px] md:leading-[25.68px] text-center break-words ${
                 isDark ? "text-white" : "text-[#545454]"
               } font-medium`}
             >
               Unleash your creativity with AI. Turn your imagination into visual
               art in seconds - just type, and watch the magic happen.
-            </div>
+            </motion.div>
             <ButtonComponent
               label="generate images ✨"
               width="w-[215px]"
@@ -95,7 +112,10 @@ export default function Home({
             <div className="w-full flex items-center justify-center gap-[0.75rem]">
               {demoAssets.map((e, idx) => {
                 return (
-                  <div
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 1 }}
                     className="w-[5.5rem] h-[5.5rem] rounded-2xl shadow-xl"
                     key={idx}
                   >
@@ -104,7 +124,7 @@ export default function Home({
                       alt="img"
                       className="w-full h-full rounded-2xl object-cover"
                     />
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -117,7 +137,12 @@ export default function Home({
             </div>
           </div>
           {/* // how it works part */}
-          <div className="w-full flex flex-col items-center gap-[1.5rem]">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full flex flex-col items-center gap-[1.5rem]"
+          >
             <div className="w-full flex flex-col items-center justify-center">
               <div className="text-center font-medium text-[40px]">
                 How it works
@@ -134,7 +159,10 @@ export default function Home({
             <div className="w-full flex flex-col items-center gap-[1.75rem]">
               {howItWorks.map((e, _) => {
                 return (
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
                     className="border-2 flex gap-[1rem] rounded-xl shadow-lg items-center w-full md:w-[80%] px-[1rem] py-[1rem] cursor-pointer hover:scale-[1.02] transition-all duration-700"
                     key={_}
                   >
@@ -155,13 +183,18 @@ export default function Home({
                         "{e.content}"
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
           {/* // create AI images part */}
-          <div className="w-full flex flex-col items-center gap-[3.75rem]">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full flex flex-col items-center gap-[3.75rem]"
+          >
             <div className="w-full flex flex-col items-center">
               <div className="text-[40px] font-semibold">
                 Create Images with AI ✨
@@ -175,15 +208,30 @@ export default function Home({
               </div>
             </div>
             {/* // card part */}
-            <div className="w-full flex flex-col md:flex-row justify-center items-center gap-[3rem]">
-              <div className="w-full md:w-[393px] h-[393px] rounded-xl">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="w-full flex flex-col md:flex-row justify-center items-center gap-[3rem]"
+            >
+              <motion.div
+                whileInView={{ scale: 1 }}
+                animate={{ scale: 0 }}
+                transition={{ duration: 1.2, type: "spring" }}
+                className="w-full md:w-[393px] h-[393px] rounded-xl"
+              >
                 <img
                   src={cardPic}
                   alt="card"
                   className="w-full h-full object-cover rounded-xl"
                 />
-              </div>
-              <div className="flex flex-col gap-[1.75rem] w-full md:w-calcCustom">
+              </motion.div>
+              <motion.div
+                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 0, y: 20 }}
+                transition={{ duration: 1.2, type: "spring" }}
+                className="flex flex-col gap-[1.75rem] w-full md:w-calcCustom"
+              >
                 <div
                   className={`text-[28px] leading-[38px] break-words w-full md:w-[70%] font-medium ${
                     isDark ? "text-white" : "text-[#545454]"
@@ -217,9 +265,9 @@ export default function Home({
                   are seamlessly visualized. Leveraging advanced generative
                   algorithms, the creative potential is boundless!
                 </div>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
           {/* // customer Testimonials */}
           <div className="w-full flex gap-[2.75rem] flex-col items-center">
             <div className="w-full flex flex-col items-center justify-center">
@@ -255,7 +303,7 @@ export default function Home({
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { useMode } from "../hooks/useMode";
+import { motion } from "motion/react";
 
 export default function ButtonComponent({
   label,
@@ -16,7 +17,10 @@ export default function ButtonComponent({
   const { isDark } = useMode();
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.8 }}
       className={`${width ? width : "w-full"} ${
         isDark ? "light" : "dark"
       } text-center ${
@@ -26,6 +30,6 @@ export default function ButtonComponent({
     >
       <div>{label}</div>
       {icon && <div>{icon}</div>}
-    </div>
+    </motion.div>
   );
 }
