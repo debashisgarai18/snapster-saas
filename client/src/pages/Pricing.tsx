@@ -5,6 +5,34 @@ import Swal from "sweetalert2";
 import { useMode } from "../hooks/useMode";
 import useLaoding from "../hooks/useLoading";
 import { Loader } from "../components/Loader";
+import { motion } from "motion/react";
+import logo from "../assets/logo.png";
+import PriceCard from "../components/PriceCard";
+
+const pricingData = [
+  {
+    image: logo,
+    category: "Basic",
+    desc: "Best for personal use.",
+    pricing: "$10",
+    perCredits: "100 credits",
+  },
+  {
+    image: logo,
+    category: "Advanced",
+    desc: "Best for business use.",
+    pricing: "$50",
+    perCredits: "500 credits",
+  },
+
+  {
+    image: logo,
+    category: "Business",
+    desc: "Best for enterprise use.",
+    pricing: "$250",
+    perCredits: "1000 credits",
+  },
+];
 
 export default function Pricing() {
   // hooks
@@ -45,13 +73,37 @@ export default function Pricing() {
 
   return (
     <div
-      className={`${isDark ? "dark" : "light"} flex justify-center w-full`}
+      className={`${
+        isDark ? "dark" : "light"
+      } flex flex-col items-center gap-[2rem] w-full`}
+      // todo : check the responsivenes for mobile devices
       style={{ height: "calc(100vh - 9.3rem)" }}
     >
-      <div className="w-full pt-[3rem] flex flex-col items-center gap-[2rem]">
-        <div className="text-[14px] leading-[28px] px-[2rem] py-[0.3rem] border border-[#C1C1C1] rounded-full bg-[##F7FBFF] text-black uppercase">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full pt-[3rem] flex flex-col items-center gap-[2rem]"
+      >
+        <div
+          className={`text-[14px] leading-[28px] px-[2rem] py-[0.rem] border border-[#C1C1C1] rounded-full bg-[##F7FBFF] ${
+            isDark ? "text-white" : "text-black"
+          } uppercase`}
+        >
           our plans
         </div>
+      </motion.div>
+      <div className="text-[35px] leading-[80px] font-medium text-center tracking-wide">
+        Choose the plan
+      </div>
+      <div className="w-[75%] md:w-[60%] px-[2rem] md:px-0 grid grid-cols-1 gap-[1rem] md:grid-cols-3">
+        {pricingData.map((e, _) => {
+          return (
+            <>
+              <PriceCard data={e} key={_} />
+            </>
+          );
+        })}
       </div>
     </div>
   );
