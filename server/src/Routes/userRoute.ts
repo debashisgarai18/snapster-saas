@@ -5,6 +5,8 @@ import { signupAuth } from "../Middlewares/authVal";
 import { signinType, signupType } from "@deba018/blogs-common";
 import { sign } from "hono/jwt";
 import { userAuthCheck } from "../Middlewares/authCheck";
+import axios from "axios";
+import FormData from "form-data";
 
 const userRoute = new Hono();
 
@@ -142,5 +144,24 @@ userRoute.post("/signin", async (c: Context) => {
     });
   }
 });
+
+// todo : endpoint to generate the image 
+userRoute.post("/genImage", userAuthCheck, async (c : Context) => {
+  const api = c.env.CLIP_DROP_API_KEY;
+  const userId = c.get("user");
+  const {prompt} = await c.req.json()
+  try{
+    const resp = await axios.post("https://clipdrop-api.co/text-to-image/v1")
+    const formData = new FormData();
+    formData.append('prompt', prompt)
+    console.log(formData) 
+  }
+  catch(err){
+    c.status(500)
+    return c.json({
+      message : `Some internal server error : ${err}`
+    })
+  }
+})
 
 export default userRoute;
