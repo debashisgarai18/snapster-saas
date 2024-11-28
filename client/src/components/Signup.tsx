@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import useLaoding from "../hooks/useLoading";
 import { Loader } from "./Loader";
 import { motion } from "motion/react";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
 export default function Signup({ clicked }: { clicked: () => void }) {
   // states
@@ -214,14 +216,25 @@ const FormInputBox = ({
   type: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
+  //states
+  const [showPwd, setShowPwd] = useState<boolean>(false);
+
   return (
-    <div className="w-full border-2 rounded-full px-[1rem] py-[0.75rem] text-[14px] leading-[17px]">
+    <div className="w-full border-2 rounded-full px-[1rem] py-[0.75rem] text-[14px] leading-[17px] relative">
       <input
-        type={type}
+        type={type === "password" ? (showPwd ? "text" : "password") : type}
         className="w-full outline-none"
         placeholder={placeholder}
         onChange={(e) => onChange(e)}
       />
+      {type === "password" && (
+        <div
+          className="absolute right-5 top-3 text-xl cursor-pointer"
+          onClick={() => setShowPwd((prev) => !prev)}
+        >
+          {showPwd ? <FaEyeSlash /> : <FaEye />}
+        </div>
+      )}
     </div>
   );
 };
