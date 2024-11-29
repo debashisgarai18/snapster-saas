@@ -5,7 +5,7 @@ import { signupAuth } from "../Middlewares/authVal";
 import { signinType, signupType } from "@deba018/blogs-common";
 import { sign } from "hono/jwt";
 import { userAuthCheck } from "../Middlewares/authCheck";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import FormData from "form-data";
 
 const userRoute = new Hono();
@@ -25,11 +25,11 @@ userRoute.get("/me", userAuthCheck, async (c: Context) => {
       where: {
         id: userId,
       },
-      select : {
-        name : true,
-        email : true,
-        credits : true
-      }
+      select: {
+        name: true,
+        email: true,
+        credits: true,
+      },
     });
     if (resp) {
       c.status(200);
@@ -145,23 +145,82 @@ userRoute.post("/signin", async (c: Context) => {
   }
 });
 
-// todo : endpoint to generate the image 
-userRoute.post("/genImage", userAuthCheck, async (c : Context) => {
+// todo : endpoint to generate the image
+userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
+  // init prisma
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+
   const api = c.env.CLIP_DROP_API_KEY;
   const userId = c.get("user");
-  const {prompt} = await c.req.json()
-  try{
-    const resp = await axios.post("https://clipdrop-api.co/text-to-image/v1")
+  const { prompt } = await c.req.json();
+
+  try {
+    // check for the credits in the user's account
+    const checkCredits = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        credits: true,
+      },
+    });
+    if (checkCredits?.credits === 0) {
+      c.status(403);
+      return c.json({
+        message: "Not enough credits",
+      });
+    }
+
     const formData = new FormData();
-    formData.append('prompt', prompt)
-    console.log(formData) 
-  }
-  catch(err){
-    c.status(500)
+    formData.append("prompt", prompt);
+    try {
+
+      // api call to the clip drop api
+      const resp = await axios.post(
+        "https://clipdrop-api.co/text-to-image/v1",
+        formData,
+        {
+          headers: {
+            'x-api-key': api,
+            'Content-Type': 'multipart/form-data',
+          },
+          responseType: "arraybuffer",
+        }
+      );
+      // generating the image url in .png from the arraybuffer
+      const base64Image = Buffer.from(resp.data, "binary").toString("base64");
+      const imageUrl = `data:image/png;base64,${base64Image}`;
+
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          credits: {
+            decrement: 1,
+          },
+        },
+      });
+
+      c.status(200);
+      return c.json({
+        message: "The Image has been generated",
+        imgUrl: imageUrl,
+      });
+    } catch (err) {
+      c.status(404);
+      return c.json({
+        message: `Some error occured : ${err}`,
+      });
+    }
+  } catch (err) {
+    c.status(500);
     return c.json({
-      message : `Some internal server error : ${err}`
-    })
+      message: `Some internal server error : ${err}`,
+    });
   }
-})
+});
 
 export default userRoute;
