@@ -7,6 +7,7 @@ import { sign } from "hono/jwt";
 import { userAuthCheck } from "../Middlewares/authCheck";
 import axios, { AxiosError } from "axios";
 import FormData from "form-data";
+import { HfInference } from "@huggingface/inference";
 
 const userRoute = new Hono();
 
@@ -173,41 +174,52 @@ userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
       });
     }
 
-    const formData = new FormData();
-    formData.append("prompt", prompt);
+    // const formData = new FormData();
+    // formData.append("prompt", prompt);
     try {
-
       // api call to the clip drop api
-      const resp = await axios.post(
-        "https://clipdrop-api.co/text-to-image/v1",
-        formData,
-        {
-          headers: {
-            'x-api-key': api,
-            'Content-Type': 'multipart/form-data',
-          },
-          responseType: "arraybuffer",
-        }
-      );
-      // generating the image url in .png from the arraybuffer
-      const base64Image = Buffer.from(resp.data, "binary").toString("base64");
-      const imageUrl = `data:image/png;base64,${base64Image}`;
+      // const resp = await axios.post(
+      //   "https://clipdrop-api.co/text-to-image/v1",
+      //   formData,
+      //   {
+      //     headers: {
+      //       'x-api-key': api,
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //     responseType: "arraybuffer",
+      //   }
+      // );
+      // // generating the image url in .png from the arraybuffer
+      // const base64Image = Buffer.from(resp.data, "binary").toString("base64");
+      // const imageUrl = `data:image/png;base64,${base64Image}`;
 
-      await prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          credits: {
-            decrement: 1,
-          },
+      const inference = new HfInference(c.env.HF_API_TOKEN);
+      const resp = await inference.textToImage({
+        model: "stabilityai/stable-diffusion-2",
+        inputs: prompt,
+        parameters: {
+          negative_prompt: "blurry",
         },
       });
+
+      const url = window.URL.createObjectURL(resp)
+      console.log(url)
+
+      // await prisma.user.update({
+      //   where: {
+      //     id: userId,
+      //   },
+      //   data: {
+      //     credits: {
+      //       decrement: 1,
+      //     },
+      //   },
+      // });
 
       c.status(200);
       return c.json({
         message: "The Image has been generated",
-        imgUrl: imageUrl,
+        // imgUrl: imageUrl,
       });
     } catch (err) {
       c.status(404);

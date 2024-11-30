@@ -6,13 +6,17 @@
   },
   "dependencies": {
     "@deba018/blogs-common": "^1.0.1",
+    "@huggingface/inference": "^2.8.1",
     "@prisma/client": "^5.22.0",
     "@prisma/extension-accelerate": "^1.2.1",
     "axios": "^1.7.8",
     "cors": "^2.8.5",
     "form-data": "^4.0.1",
+    "fs": "^0.0.1-security",
     "hono": "^4.6.11",
+    "huggingface": "^1.4.0",
     "jsonwebtoken": "^9.0.2",
+    "openai": "^4.73.1",
     "razorpay": "^2.9.5"
   },
   "devDependencies": {
