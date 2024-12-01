@@ -18,5 +18,5 @@ model User {
   name     String?
   email    String  @unique
   password String
-  credits  Int     @default(3)
+  credits  Int     @default(5)
 }

@@ -146,7 +146,7 @@ userRoute.post("/signin", async (c: Context) => {
   }
 });
 
-// todo : endpoint to generate the image
+// endpoint to generate the image
 userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
   // init prisma
   const prisma = new PrismaClient({
