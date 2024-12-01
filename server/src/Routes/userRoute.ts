@@ -203,10 +203,20 @@ userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
         },
       });
 
+      const userCredits = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          credits: true,
+        },
+      });
+
       c.status(200);
       return c.json({
         message: "The Image has been generated",
         imgUrl: imageUrl,
+        credits: userCredits?.credits,
       });
     } catch (error) {
       const err = error as AxiosError;
