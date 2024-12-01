@@ -61,7 +61,7 @@ export default function SubApp() {
         setIsSignedIn(false);
       }
     })();
-  }, [url, isSignedin]);
+  }, [url, isSignedin, credits]);
 
   return (
     <>
@@ -85,7 +85,7 @@ export default function SubApp() {
                   }
                 />
                 <Route path="/pricing" element={<Pricing />} />
-                <Route path="/generate" element={<GenImage />} />
+                <Route path="/generate" element={<GenImage updateCredits = {(e) => setCredits(e)} />} />
               </Routes>
               <RenderFooter />
             </BrowserRouter>
