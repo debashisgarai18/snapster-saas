@@ -1,5 +1,15 @@
+import axios, { AxiosError } from "axios";
 import { useMode } from "../hooks/useMode";
 import { motion } from "motion/react";
+import Swal from "sweetalert2";
+
+ // copied from internet
+ declare global {
+  interface Window {
+    // todo : solve this
+    Razorpay : any;
+  }  
+}
 
 export default function PriceCard({
   data,
@@ -15,12 +25,65 @@ export default function PriceCard({
   // hooks
   const { isDark } = useMode();
 
+  // function to initialise payment
+  const initializePayment = async (order: {
+    amount: number;
+    currency: string;
+    id: string;
+    receipt: string;
+  }) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Credit Payment",
+      description: "For Payment of the Credits",
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (resp: {
+        razorpay_payment_id: string;
+        razorpay_order_id: string;
+        razorpay_signature: string;
+      }) => {
+        console.log(resp);
+      },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
   // function to buy credits
-  const handleBuyCredits = () => {
-    // check that the user is logged in or not
-    // todo : if the error message ==> No auth hader provided or No token provided or User not Authenticated, then show one SWAL -> to login and proceed
-    console.log("clicked")
-  }
+  const handleBuyCredits = async (planId: string) => {
+    try {
+      const resp = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/buyCredits?planId=${planId}`,
+        {},
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      // if the order status is true, tehn only the payment should be initialised
+      if (resp.data.orderStatus) {
+        initializePayment(resp.data.orders);
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      if (
+        error.response?.data.message === "No auth hader provided" ||
+        error.response?.data.message === "No token provided" ||
+        error.response?.data.message === "User not Authenticated"
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "You are not logged in",
+        });
+      }
+      console.log(`Some endpoint error : ${error.response?.data.message}`);
+    }
+  };
   return (
     <>
       <motion.div
@@ -51,7 +114,7 @@ export default function PriceCard({
             className={`w-[50%] text-center ${
               isDark ? "light" : "dark"
             } text-[15px] leading-[28px] py-[0.5rem] rounded-xl font-medium`}
-            onClick={handleBuyCredits}
+            onClick={() => handleBuyCredits(data.category)}
           >
             Buy Now
           </button>
