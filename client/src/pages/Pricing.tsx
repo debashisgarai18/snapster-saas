@@ -75,8 +75,7 @@ export default function Pricing() {
     <div
       className={`${
         isDark ? "dark" : "light"
-      } flex flex-col items-center gap-[2rem] w-full`}
-      // todo : check the responsivenes for mobile devices
+      } md:overflow-hidden overflow-y-scroll flex flex-col items-center gap-[2rem] w-full`}
       style={{ height: "calc(100vh - 9.3rem)" }}
     >
       <motion.div
@@ -86,7 +85,7 @@ export default function Pricing() {
         className="w-full pt-[3rem] flex flex-col items-center gap-[2rem]"
       >
         <div
-          className={`text-[14px] leading-[28px] px-[2rem] py-[0.rem] border border-[#C1C1C1] rounded-full bg-[##F7FBFF] ${
+          className={`text-[14px] leading-[28px] px-[2rem] py-[0.5rem] border border-[#C1C1C1] rounded-full bg-[##F7FBFF] ${
             isDark ? "text-white" : "text-black"
           } uppercase`}
         >
@@ -96,7 +95,7 @@ export default function Pricing() {
       <div className="text-[35px] leading-[80px] font-medium text-center tracking-wide">
         Choose the plan
       </div>
-      <div className="w-[75%] md:w-[60%] px-[2rem] md:px-0 grid grid-cols-1 gap-[1rem] md:grid-cols-3">
+      <div className="w-[95%] md:w-[60%] px-[1.5rem] md:px-0 grid grid-cols-1 gap-[1rem] md:grid-cols-3">
         {pricingData.map((e, _) => {
           return (
             <>

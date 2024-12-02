@@ -1,4 +1,5 @@
 import { useMode } from "../hooks/useMode";
+import { motion } from "motion/react";
 
 export default function PriceCard({
   data,
@@ -13,12 +14,22 @@ export default function PriceCard({
 }) {
   // hooks
   const { isDark } = useMode();
+
+  // function to buy credits
+  const handleBuyCredits = () => {
+    // check that the user is logged in or not
+    // todo : if the error message ==> No auth hader provided or No token provided or User not Authenticated, then show one SWAL -> to login and proceed
+    console.log("clicked")
+  }
   return (
     <>
-      <div
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 0.2 }}
         className={`${
           isDark ? "bg-[#202020] text-white" : "bg-white text-black"
-        } flex flex-col gap-[2rem] px-[2rem] py-[2rem] shadow-xl rounded-xl`}
+        } flex flex-col gap-[2rem] p-[1.75rem] md:p-[2rem] shadow-xl rounded-xl`}
       >
         <div className="w-[31px] h-[31px]">
           <img src={data.image} alt="logo" className="w-full h-full" />
@@ -40,11 +51,12 @@ export default function PriceCard({
             className={`w-[50%] text-center ${
               isDark ? "light" : "dark"
             } text-[15px] leading-[28px] py-[0.5rem] rounded-xl font-medium`}
+            onClick={handleBuyCredits}
           >
             Buy Now
           </button>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

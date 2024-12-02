@@ -102,6 +102,7 @@ export default function Navbar({
             >
               <div
                 className="flex items-center gap-[0.3rem] hover:scale-105 transition-all cursor-pointer duration-700"
+                onClick={() => nav("/pricing")}
               >
                 <div className="hidden md:block">Credits Left : </div>
                 <div>{data.credits}</div>
