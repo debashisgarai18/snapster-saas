@@ -2,9 +2,12 @@ name = "server"
 main = "src/index.ts"
 compatibility_date = "2024-11-21"
 
-# compatibility_flags = [ "nodejs_compat" ]
+compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
 DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiOTViZTk0NjMtNTU2Zi00Zjc0LTk2MTgtYzU4NWRjMzEyNjZiIiwidGVuYW50X2lkIjoiN2VlYWQ0ZDJhMDRkMDc1ODNkZmMxY2Y2ODE1NzBmODliZGQxNWI2ODFhZjQ5Y2JkN2I3NzY4N2MzMzA3MzAyNiIsImludGVybmFsX3NlY3JldCI6IjQ5YzZkZjM1LTJjMjctNGU2NS1iODI5LTJmMWNjYmU1ODRmOCJ9.REGOQxQIBZfyAEUSEEyWrfc_wdKhWfA5iqehezMZIwQ"
 JWT_SECRET="deba018_sassImageApplication_a95_1303"
 CLIP_DROP_API_KEY="23b5f67d9a690ffe6094a95be6cc333630b372fad9f7bd76bb93ee266a0099e7cc6a7c6c4ec32e8844bc34ecc6fcfde8"
+RAZORPAY_KEY_ID="rzp_test_N520HsPMDc25uS"
+RAZORPAY_KEY_SECRET="j8fh1x1WppPrSfWydrFLgIVS"
+CURRENCY="INR"

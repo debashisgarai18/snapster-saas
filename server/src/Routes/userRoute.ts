@@ -8,6 +8,7 @@ import { userAuthCheck } from "../Middlewares/authCheck";
 import axios, { AxiosError } from "axios";
 import FormData from "form-data";
 import { Buffer } from "buffer";
+import Razorpay from "razorpay";
 
 const userRoute = new Hono();
 
@@ -226,6 +227,61 @@ userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
         message: `Some error occured : ${error}`,
       });
     }
+  } catch (err) {
+    c.status(500);
+    return c.json({
+      message: `Some internal server error : ${err}`,
+    });
+  }
+});
+
+// endpoint to trigger the razorpay api and increase teh credit balance for the specific user
+userRoute.post("/buyCredits", userAuthCheck, async (c: Context) => {
+  console.log(process.env.RAZORPAY_KEY_ID, process.env.RAZORPAY_KEY_SECRET)
+  console.log(c.env.RAZORPAY_KEY_ID, c.env.RAZORPAY_KEY_SECRET)
+  // instance for razorpay
+  const razorpayInstance = new Razorpay({
+    key_id: c.env.RAZORPAY_KEY_ID,
+    key_secret: c.env.RAZORPAY_KEY_SECRET,
+  });
+
+  const userId = c.get("user");
+  const planId = c.req.query("planId");
+  let credits,
+    plan,
+    amount,
+    date = new Date();
+
+  // create the plan variables for different plan IDs
+  switch (planId) {
+    case "Basic":
+      (plan = "Basic"), (credits = 100), (amount = 10);
+      break;
+    case "Advanced":
+      (plan = "Advanced"), (credits = 500), (amount = 50);
+      break;
+    case "Business":
+      (plan = "Business"), (credits = 1000), (amount = 250);
+      break;
+    default:
+      c.status(404);
+      return c.json({
+        message: "The plan is not found",
+      });
+  }
+
+  const transactionData = {
+    userId,
+    plan,
+    credits,
+    amount,
+    date,
+  };
+
+  try {
+    return c.json({
+      message: transactionData,
+    });
   } catch (err) {
     c.status(500);
     return c.json({
