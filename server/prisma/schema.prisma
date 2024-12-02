@@ -20,3 +20,13 @@ model User {
   password String
   credits  Int     @default(5)
 }
+
+model Transaction {
+  id      String   @id @default(uuid())
+  userId  String
+  plan    String
+  amount  Int
+  credits Int
+  payment Boolean  @default(false)
+  date    DateTime @default(now())
+}

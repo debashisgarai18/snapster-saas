@@ -9,6 +9,7 @@ import axios, { AxiosError } from "axios";
 import FormData from "form-data";
 import { Buffer } from "buffer";
 import Razorpay from "razorpay";
+import { Messages } from "openai/resources/beta/threads/messages.mjs";
 
 const userRoute = new Hono();
 
@@ -237,15 +238,18 @@ userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
 
 // endpoint to trigger the razorpay api and increase teh credit balance for the specific user
 userRoute.post("/buyCredits", userAuthCheck, async (c: Context) => {
-  console.log(process.env.RAZORPAY_KEY_ID, process.env.RAZORPAY_KEY_SECRET)
-  console.log(c.env.RAZORPAY_KEY_ID, c.env.RAZORPAY_KEY_SECRET)
   // instance for razorpay
   const razorpayInstance = new Razorpay({
     key_id: c.env.RAZORPAY_KEY_ID,
     key_secret: c.env.RAZORPAY_KEY_SECRET,
   });
 
-  const userId = c.get("user");
+  // init prisma
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId: string = c.get("user");
   const planId = c.req.query("planId");
   let credits,
     plan,
@@ -279,9 +283,37 @@ userRoute.post("/buyCredits", userAuthCheck, async (c: Context) => {
   };
 
   try {
-    return c.json({
-      message: transactionData,
+    const newTransaction = await prisma.transaction.create({
+      data: {
+        userId: transactionData.userId,
+        plan: transactionData.plan,
+        credits: transactionData.credits,
+        amount: transactionData.amount,
+        date: transactionData.date,
+      },
     });
+
+    const options = {
+      amount: amount * 100,
+      currency: c.env.CURRENCY,
+      receipt: newTransaction.id,
+    };
+
+    try {
+      const paymentResp: any = await razorpayInstance.orders.create(options);
+      c.status(200);
+      return c.json({
+        orderStatus: true,
+        orders: paymentResp,
+        message: "Payment Successfull",
+      });
+    } catch (err) {
+      c.status(404);
+      return c.json({
+        orderStatus: false,
+        message: `Some razorpay error : ${err}`,
+      });
+    }
   } catch (err) {
     c.status(500);
     return c.json({
