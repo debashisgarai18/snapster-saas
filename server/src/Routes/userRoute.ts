@@ -10,6 +10,7 @@ import FormData from "form-data";
 import { Buffer } from "buffer";
 import Razorpay from "razorpay";
 import { Messages } from "openai/resources/beta/threads/messages.mjs";
+import { privateDecrypt } from "crypto";
 
 const userRoute = new Hono();
 
@@ -236,7 +237,7 @@ userRoute.post("/genImage", userAuthCheck, async (c: Context) => {
   }
 });
 
-// endpoint to trigger the razorpay api and increase teh credit balance for the specific user
+// endpoint to trigger the razorpay api
 userRoute.post("/buyCredits", userAuthCheck, async (c: Context) => {
   // instance for razorpay
   const razorpayInstance = new Razorpay({
@@ -312,6 +313,97 @@ userRoute.post("/buyCredits", userAuthCheck, async (c: Context) => {
       return c.json({
         orderStatus: false,
         message: `Some razorpay error : ${err}`,
+      });
+    }
+  } catch (err) {
+    c.status(500);
+    return c.json({
+      message: `Some internal server error : ${err}`,
+    });
+  }
+});
+
+// ednpoint to check the order by the order Id and increase the credit ammount for the user
+userRoute.post("/updateCredits", userAuthCheck, async (c: Context) => {
+  // instance for razorpay
+  const razorpayInstance = new Razorpay({
+    key_id: c.env.RAZORPAY_KEY_ID,
+    key_secret: c.env.RAZORPAY_KEY_SECRET,
+  });
+
+  // init prisma
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const { razorpay_order_id } = await c.req.json();
+
+  try {
+    const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id);
+    // if the payment is successfull
+    if (orderInfo.status === "paid") {
+      // find the transaction from the transaction table
+      try {
+        const transactionData = await prisma.transaction.findUnique({
+          where: {
+            id: orderInfo.receipt,
+          },
+          select: {
+            userId: true,
+            credits: true,
+            plan: true,
+            payment: true,
+          },
+        });
+        if (transactionData?.payment) {
+          c.status(404);
+          return c.json({
+            message: "Payment Failed -> old order ID",
+          });
+        }
+        try {
+          // update the payment in the transaction for the specific order id to be true
+          await prisma.transaction.update({
+            where: {
+              id: orderInfo.receipt,
+            },
+            data: {
+              payment: true,
+            },
+          });
+
+          // update the user credits then
+          const userData = await prisma.user.update({
+            where: {
+              id: transactionData?.userId,
+            },
+            data: {
+              credits: {
+                increment: transactionData?.credits,
+              },
+            },
+          });
+          c.status(200);
+          return c.json({
+            uodatedCredits: userData.credits,
+            message: "Credits Updated",
+          });
+        } catch (err) {
+          c.status(500);
+          return c.json({
+            message: `Some prisma errorin updating the user credits : ${err}`,
+          });
+        }
+      } catch (err) {
+        c.status(500);
+        return c.json({
+          message: `Some prisma errorin updating the transactions : ${err}`,
+        });
+      }
+    } else {
+      c.status(400);
+      return c.json({
+        message: "Payment Failed",
       });
     }
   } catch (err) {
