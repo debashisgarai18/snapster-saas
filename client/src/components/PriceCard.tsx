@@ -46,6 +46,7 @@ export default function PriceCard({
         razorpay_signature: string;
       }) => {
         console.log(resp);
+        // todo ; call another endpoint to actually add the credits and update the payment in the DB
       },
     };
     const rzp = new window.Razorpay(options);
