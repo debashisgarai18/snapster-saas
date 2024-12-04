@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useMode } from "../hooks/useMode";
 import { motion } from "motion/react";
 import Swal from "sweetalert2";
+import useLaoding from "../hooks/useLoading";
 
 // copied from internet
 declare global {
@@ -26,6 +27,7 @@ export default function PriceCard({
 }) {
   // hooks
   const { isDark } = useMode();
+  const { setLoading } = useLaoding();
 
   // function to initialise payment
   const initializePayment = async (order: {
@@ -49,6 +51,7 @@ export default function PriceCard({
       }) => {
         const respObject = resp;
         try {
+          setLoading((prev) => !prev);
           const creditsAdded = await axios.post(
             `${import.meta.env.VITE_BACKEND_URL}/user/updateCredits`,
             respObject,
@@ -59,12 +62,13 @@ export default function PriceCard({
             }
           );
           if (creditsAdded) {
-            updateCredits(creditsAdded.data.updatedCredits);
+            setLoading((prev) => !prev);
             Swal.fire({
               icon: "success",
               title: "Congratulations!!!",
               text: "The credits are updated",
             });
+            updateCredits(creditsAdded.data.updatedCredits);
           }
         } catch (err) {
           const error = err as AxiosError<{ message: string }>;
@@ -83,6 +87,7 @@ export default function PriceCard({
   // function to buy credits
   const handleBuyCredits = async (planId: string) => {
     try {
+      setLoading((prev) => !prev);
       const resp = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/user/buyCredits?planId=${planId}`,
         {},
@@ -94,6 +99,7 @@ export default function PriceCard({
       );
       // if the order status is true, tehn only the payment should be initialised
       if (resp.data.orderStatus) {
+        setLoading((prev) => !prev);
         initializePayment(resp.data.orders);
       }
     } catch (err) {
