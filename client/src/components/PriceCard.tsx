@@ -47,7 +47,6 @@ export default function PriceCard({
         razorpay_order_id: string;
         razorpay_signature: string;
       }) => {
-        // todo : call another endpoint to actually add the credits and update the payment in the DB
         const respObject = resp;
         try {
           const creditsAdded = await axios.post(
