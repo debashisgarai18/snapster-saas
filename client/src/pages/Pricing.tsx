@@ -34,7 +34,7 @@ const pricingData = [
   },
 ];
 
-export default function Pricing() {
+export default function Pricing({updateCredits} : {updateCredits : (e : number | undefined) => void}) {
   // hooks
   const { isSignedin } = useAuth();
   const nav = useNavigate();
@@ -99,7 +99,7 @@ export default function Pricing() {
         {pricingData.map((e, _) => {
           return (
             <>
-              <PriceCard data={e} key={_} />
+              <PriceCard data={e} key={_} updateCredits = {updateCredits} />
             </>
           );
         })}

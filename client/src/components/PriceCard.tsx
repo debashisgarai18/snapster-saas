@@ -3,16 +3,17 @@ import { useMode } from "../hooks/useMode";
 import { motion } from "motion/react";
 import Swal from "sweetalert2";
 
- // copied from internet
- declare global {
+// copied from internet
+declare global {
   interface Window {
     // todo : solve this
-    Razorpay : any;
-  }  
+    Razorpay: any;
+  }
 }
 
 export default function PriceCard({
   data,
+  updateCredits,
 }: {
   data: {
     image: string;
@@ -21,6 +22,7 @@ export default function PriceCard({
     pricing: string;
     perCredits: string;
   };
+  updateCredits: (e: number | undefined) => void;
 }) {
   // hooks
   const { isDark } = useMode();
@@ -45,8 +47,34 @@ export default function PriceCard({
         razorpay_order_id: string;
         razorpay_signature: string;
       }) => {
-        console.log(resp);
-        // todo ; call another endpoint to actually add the credits and update the payment in the DB
+        // todo : call another endpoint to actually add the credits and update the payment in the DB
+        const respObject = resp;
+        try {
+          const creditsAdded = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/user/updateCredits`,
+            respObject,
+            {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+          if (creditsAdded) {
+            updateCredits(creditsAdded.data.updatedCredits);
+            Swal.fire({
+              icon: "success",
+              title: "Congratulations!!!",
+              text: "The credits are updated",
+            });
+          }
+        } catch (err) {
+          const error = err as AxiosError<{ message: string }>;
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response?.data.message,
+          });
+        }
       },
     };
     const rzp = new window.Razorpay(options);

@@ -84,7 +84,7 @@ export default function SubApp() {
                     />
                   }
                 />
-                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/pricing" element={<Pricing updateCredits = {(e) => setCredits(e)}/>} />
                 <Route path="/generate" element={<GenImage updateCredits = {(e) => setCredits(e)} />} />
               </Routes>
               <RenderFooter />

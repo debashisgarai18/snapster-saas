@@ -5,12 +5,10 @@ import { signupAuth } from "../Middlewares/authVal";
 import { signinType, signupType } from "@deba018/blogs-common";
 import { sign } from "hono/jwt";
 import { userAuthCheck } from "../Middlewares/authCheck";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import FormData from "form-data";
 import { Buffer } from "buffer";
 import Razorpay from "razorpay";
-import { Messages } from "openai/resources/beta/threads/messages.mjs";
-import { privateDecrypt } from "crypto";
 
 const userRoute = new Hono();
 
@@ -385,7 +383,7 @@ userRoute.post("/updateCredits", userAuthCheck, async (c: Context) => {
           });
           c.status(200);
           return c.json({
-            uodatedCredits: userData.credits,
+            updatedCredits: userData.credits,
             message: "Credits Updated",
           });
         } catch (err) {
